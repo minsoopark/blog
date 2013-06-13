@@ -1,0 +1,7 @@
+<form method="post" action="/blog/add/comment/">
+	{% csrf_token %}
+	<input type="hidden" name="entry_id" value="{{ current_entry.id }}" />
+	<input type="hidden" id="name" name="name" value="{{ user.username }}" />
+	<p><textarea id="content" name="content"></textarea></p>
+	<p><input type="submit" value="댓글 달기" /></p>
+</form>

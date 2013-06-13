@@ -1,0 +1,8 @@
+<h1>{{ page_title }}</h1>
+
+<form method="post" action="/blog/add/user/">
+	{% csrf_token %}
+	<p><label for="username">아이디</label><input type="text" id="username" name="username" value=""/></p>
+	<p><label for="password">비밀번호</label><input type="password" id="password" name="password" value="" /></p>
+	<p><input type="submit" value="가입"/></p>
+</form>
