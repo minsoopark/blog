@@ -71,7 +71,7 @@ def read(request, entry_id=None):
 	try:
 		current_entry = Entries.objects.get(id=int(entry_id))
 	except:
-		return HttpResponse('그런 글은 없어요.')
+		return HttpResponse('없는 글입니다.')
 
 	try:
 		prev_entry = current_entry.get_previous_by_created()
@@ -125,33 +125,33 @@ def add_post(request):
 	entry_id = Entries
 
 	if request.POST.has_key('name') == False:
-		return HttpResponse('작성자가 없어요.')
+		return HttpResponse('작성자가 없습니다.')
 	else:
 		if len(request.POST['name']) == 0:
-			return HttpResponse('작성자가 안보여요.')
+			return HttpResponse('빈 작성자입니다.')
 		else:
 			entry_writer = request.POST['name']
 
 	if request.POST.has_key('title') == False:
-		return HttpResponse('제목도 없는 글 쓸꺼에요?')
+		return HttpResponse('글 제목이 없습니다.')
 	else:
 		if len(request.POST['title']) == 0:
-			return HttpResponse('제목에 한 글자는 쓰셔야죠.')
+			return HttpResponse('빈 제목입니다.')
 		else:
 			entry_title = request.POST['title']
 
 	if request.POST.has_key('content') == False:
-		return HttpResponse('글에 내용이 없네요.')
+		return HttpResponse('글 내용이 없습니다.')
 	else:
 		if len(request.POST['content']) == 0:
-			return HttpResponse('내용 좀 채워주세요.')
+			return HttpResponse('글 내용이 비어있습니다.')
 		else:
 			entry_content = request.POST['content']
 
 	try:
 		entry_category = Categories.objects.get(id=request.POST['category'])
 	except:
-		return HttpResponse('글 갈래가 이상한데요?')
+		return HttpResponse('올바르지 않은 카테고리입니다.')
 
 	if request.POST.has_key('tags') == True:
 		tags = map(lambda str: str.strip(), unicode(request.POST['tags']).split(','))
@@ -164,7 +164,7 @@ def add_post(request):
 	try:
 		new_entry.save()
 	except:
-		return HttpResponse('아이고 오류 떴다!')
+		return HttpResponse('오류')
 
 	for tag in tag_list:
 		new_entry.Tags.add(tag)
@@ -173,39 +173,39 @@ def add_post(request):
 		try:
 			new_entry.save()
 		except:
-			return HttpResponse('아이고 오류 떴다!')
+			return HttpResponse('오류')
 
-	return HttpResponse('%s번 글을 제대로 써넣었어요.' % new_entry.id)
+	return HttpResponse('%s번 글을 성공적으로 작성했습니다.' % new_entry.id)
 
 
 def add_comment(request):
 	cmt_name = request.POST.get('name', '')
 	if not cmt_name.strip():
-		return HttpResponse('누가 댓글을 달고있는지 모르겠어요!')
+		return HttpResponse('작성자 이름이 올바르지 않습니다.')
 
 	cmt_content = request.POST.get('content', '')
 	if not cmt_content.strip():
-		return HttpResponse('댓글 내용은 당연히 써야죠.')
+		return HttpResponse('댓글 내용을 입력하세요.')
 
 	if request.POST.has_key('entry_id') == False:
-		return HttpResponse('댓글 달 글이 지정이 안돼있어요.')
+		return HttpResponse('댓글 달 글이 지정되어있지 않습니다.')
 	else:
 		try:
 			entry = Entries.objects.get(id=request.POST['entry_id'])
 		except:
-			return HttpResponse('그런 글은 없어요!')
+			return HttpResponse('없는 글입니다.')
 	
 	new_cmt = Comments(Name=cmt_name, Content=cmt_content, Entry=entry)
 		
 	try:
 		new_cmt.save()
 	except:
-		return HttpResponse('제대로 저장하지 못했어요.')
+		return HttpResponse('제대로 저장하지 못했습니다.')
 
 	entry.Comments += 1
 	entry.save()
 
-	return HttpResponse('%s번 글에 댓글이 잘 달렸어요.' % entry.id)
+	return HttpResponse('%s번 글에 댓글을 달았습니다.' % entry.id)
 
 
 def join_form(request):
@@ -232,7 +232,7 @@ def add_user(request):
 	user.is_staff = False
 	user.save()
 
-	return HttpResponse('회원가입이 완료되었어요!')
+	return HttpResponse('회원가입이 완료되었습니다.')
 
 
 def logout_page(request):
